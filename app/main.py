@@ -145,20 +145,21 @@ async def root():
 # RESPONSE:
 #   The first bug report as Observation object
 # ================================================================
+from pydantic import BaseModel
+
+class ResetRequest(BaseModel):
+    task: str = "all"
+    seed: int = 42
+
 @app.post("/reset")
-async def reset(task: str = "all", seed: int = 42):
+async def reset(request: ResetRequest = None):
+    task = request.task if request else "all"
+    seed = request.seed if request else 42
 
     global env
-
     try:
-        # Create new environment with requested settings
-        # This allows judges to test specific difficulty levels!
         env = CodeReviewEnv(task=task, seed=seed)
-
-        # Reset and get first observation
         observation = env.reset()
-
-        # Return observation as dict
         return {
             "observation": observation.model_dump(),
             "info": {
@@ -168,9 +169,7 @@ async def reset(task: str = "all", seed: int = 42):
                 "message": "Episode started successfully!"
             }
         }
-
     except Exception as e:
-        # If anything goes wrong tell the agent what happened
         raise HTTPException(
             status_code=500,
             detail=f"Reset failed: {str(e)}"

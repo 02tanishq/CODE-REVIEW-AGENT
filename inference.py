@@ -37,7 +37,7 @@ API_BASE_URL = os.getenv(
     "API_BASE_URL",
     "https://api.groq.com/openai/v1"
 )
-MODEL_NAME = os.getenv("MODEL_NAME", "llama3-8b-8192")
+MODEL_NAME = os.getenv("MODEL_NAME", "llama-3.1-8b-instant")
 HF_TOKEN = os.getenv("HF_TOKEN", "")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 ENV_URL = os.getenv("ENV_URL", "http://localhost:7860")
@@ -207,11 +207,11 @@ def ask_llm(prompt: str) -> dict:
             messages=[
                 {
                     "role": "system",
-                    "content": "You are an expert code reviewer. Always respond with valid JSON only."
+                    "content": "You are a code reviewer. Respond with ONLY a JSON object. No other text. Start your response with { and end with }."
                 },
                 {
                     "role": "user",
-                    "content": prompt
+                    "content": prompt + "\n\nIMPORTANT: Your entire response must be a single JSON object starting with { and ending with }. No markdown, no backticks, no explanation text."
                 }
             ],
             max_tokens=1000,
@@ -262,21 +262,26 @@ def ask_llm(prompt: str) -> dict:
 # ================================================================
 def parse_llm_response(response: dict) -> dict:
 
-    # Build action dict from LLM response
-    # Use .get() with defaults so missing fields dont crash
-    action = {
-        "error_line": int(response.get("error_line", 1)),
-        "error_type": str(response.get("error_type", "SyntaxError")),
-    }
+    action = {}
 
-    # Optional fields — only add if LLM provided them
-    optional_fields = [
+    # Force error_line to be integer always
+    try:
+        action["error_line"] = int(response.get("error_line", 1))
+    except (ValueError, TypeError):
+        action["error_line"] = 1
+
+    # Force error_type to be string always
+    try:
+        action["error_type"] = str(response.get("error_type", "SyntaxError"))
+    except (ValueError, TypeError):
+        action["error_type"] = "SyntaxError"
+
+    # Optional string fields
+    string_fields = [
         "explanation",
         "fixed_code",
-        "edge_cases",
         "root_cause",
         "relevant_log_timestamp",
-        "is_duplicate",
         "duplicate_of",
         "duplicate_reasoning",
         "assigned_team",
@@ -284,12 +289,35 @@ def parse_llm_response(response: dict) -> dict:
         "fallback_developer"
     ]
 
-    for field in optional_fields:
-        if field in response and response[field] is not None:
-            action[field] = response[field]
+    for field in string_fields:
+        val = response.get(field)
+        if val is not None:
+            action[field] = str(val)
+
+    # Optional list fields
+    list_fields = [
+        "edge_cases",
+        "affected_environments",
+        "not_affected_environments"
+    ]
+
+    for field in list_fields:
+        val = response.get(field)
+        if val is not None and isinstance(val, list):
+            action[field] = val
+
+    # Optional boolean fields
+    bool_fields = ["is_duplicate"]
+
+    for field in bool_fields:
+        val = response.get(field)
+        if val is not None:
+            if isinstance(val, bool):
+                action[field] = val
+            elif isinstance(val, str):
+                action[field] = val.lower() == "true"
 
     return action
-
 
 # ================================================================
 # MAIN FUNCTION: run_episode()
@@ -340,18 +368,36 @@ def run_episode(task: str = "all", seed: int = 42) -> dict:
         # Build prompt from observation
         prompt = build_prompt(observation)
 
-        # Ask LLM for answer
         llm_response = ask_llm(prompt)
 
-        # Parse LLM response into action format
+        if llm_response is None:
+            print(f"Skipping bug {bug_id} - LLM failed")
+    # Move to next bug manually
+            step_response = call_env(
+                "/step",
+                method="POST",
+                data={"error_line": 99, "error_type": "Unknown"}
+            )
+            reward = step_response.get("reward", {})
+            score = reward.get("score", 0.0)
+            done = step_response.get("done", True)
+            observation = step_response.get("observation")
+            episode_scores.append(0.0)
+            continue
+
         action = parse_llm_response(llm_response)
 
         # Send action to environment
-        step_response = call_env(
-            "/step",
-            method="POST",
-            data=action
-        )
+        try:
+            step_response = call_env(
+                "/step",
+                method="POST",
+                data=action
+            )
+        except Exception as e:
+            print(f"Step failed: {e}")
+            print(f"Action that caused error: {action}")
+            break
 
         # Extract reward and next observation
         reward = step_response.get("reward", {})
