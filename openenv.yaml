@@ -1,0 +1,262 @@
+# ================================================================
+# FILE: openenv.yaml
+# PURPOSE: Metadata and specification for Code Review Agent env
+#
+# This file is READ by openenv validate command
+# Judges use it to understand your environment
+# ANY missing field = validation fails!
+# ================================================================
+
+# Basic environment information
+name: code-review-agent
+version: 1.0.0
+description: >
+  A real-world OpenEnv environment where AI agents learn to
+  review code bugs. Agents analyze buggy Python code and must
+  identify error lines, error types, root causes, and suggest
+  fixes across three difficulty levels. Includes advanced
+  scenarios like semantic duplicate detection, red herring
+  log analysis, OS-specific bugs, and OOO developer assignment.
+
+# Who made this
+author: tanishq
+license: MIT
+
+# What kind of environment this is
+tags:
+  - code-review
+  - software-engineering
+  - bug-detection
+  - real-world
+  - python
+
+# ================================================================
+# TASKS
+# Each task is one difficulty level
+# Judges will run each task separately
+# ================================================================
+tasks:
+
+  - id: task_easy
+    name: Bug Detection
+    difficulty: easy
+    description: >
+      Agent reads buggy Python code and must identify
+      the exact line number and error type.
+      Tests basic code reading ability.
+    max_score: 1.0
+    min_score: 0.0
+    scoring:
+      error_line: 0.5
+      error_type: 0.4
+      tests_passed: 0.1
+
+  - id: task_medium
+    name: Bug Analysis
+    difficulty: medium
+    description: >
+      Agent must find the bug, explain why it is wrong,
+      identify edge cases affected, and suggest a fix.
+      Tests deeper code understanding.
+    max_score: 1.0
+    min_score: 0.0
+    scoring:
+      error_line: 0.25
+      error_type: 0.25
+      explanation: 0.25
+      edge_cases: 0.25
+      tests_passed: 0.1
+
+  - id: task_hard
+    name: Full Code Review
+    difficulty: hard
+    description: >
+      Complete code review with log analysis, semantic
+      duplicate detection, OS-specific bug identification,
+      and OOO-aware developer assignment. Genuinely
+      challenges frontier models like GPT-4.
+    max_score: 1.0
+    min_score: 0.0
+    scoring:
+      error_line: 0.15
+      error_type: 0.15
+      root_cause: 0.15
+      relevant_log: 0.15
+      duplicate_check: 0.15
+      assignment: 0.15
+      fixed_code: 0.10
+
+# ================================================================
+# API ENDPOINTS
+# These are the OpenEnv standard endpoints
+# Judges automated system calls these exactly
+# ================================================================
+api:
+  reset:
+    method: POST
+    path: /reset
+    description: Start a fresh episode and get first bug report
+    parameters:
+      task:
+        type: string
+        default: all
+        options:
+          - easy
+          - medium
+          - hard
+          - all
+      seed:
+        type: integer
+        default: 42
+        description: Random seed for reproducibility
+
+  step:
+    method: POST
+    path: /step
+    description: Submit action and get reward plus next bug
+    body: Action object with error_line and error_type required
+
+  state:
+    method: GET
+    path: /state
+    description: Get current episode state and scores anytime
+
+# ================================================================
+# OBSERVATION SPACE
+# Describes what the agent receives each step
+# ================================================================
+observation_space:
+  type: object
+  fields:
+    bug_id:
+      type: string
+      description: Unique identifier for this bug
+    bug_title:
+      type: string
+      description: Short title of the bug
+    bug_description:
+      type: string
+      description: Full description of what is wrong
+    bug_category:
+      type: string
+      description: Category of error
+    buggy_code:
+      type: string
+      description: The broken Python code to review
+    task_type:
+      type: string
+      options:
+        - find_error_line
+        - find_and_explain
+        - full_review
+    difficulty:
+      type: string
+      options:
+        - easy
+        - medium
+        - hard
+    error_logs:
+      type: array
+      optional: true
+      description: Server logs with red herrings for hard bugs
+    previous_bugs:
+      type: array
+      optional: true
+      description: Previous bugs for duplicate detection
+    available_developers:
+      type: array
+      optional: true
+      description: Developers with availability for assignment
+    os_details:
+      type: object
+      optional: true
+      description: OS specific information for platform bugs
+
+# ================================================================
+# ACTION SPACE
+# Describes what the agent must submit each step
+# ================================================================
+action_space:
+  type: object
+  required:
+    - error_line
+    - error_type
+  optional:
+    - explanation
+    - fixed_code
+    - edge_cases
+    - root_cause
+    - relevant_log_timestamp
+    - is_duplicate
+    - duplicate_of
+    - duplicate_reasoning
+    - assigned_team
+    - assigned_developer
+    - fallback_developer
+    - affected_environments
+    - not_affected_environments
+
+# ================================================================
+# REWARD SPACE
+# Describes the reward structure
+# ================================================================
+reward_space:
+  type: float
+  min: 0.0
+  max: 1.0
+  description: >
+    Dense reward signal. Partial credit given for each
+    correct field. Not sparse binary 0/1 reward.
+    Agent receives detailed feedback explaining score.
+
+# ================================================================
+# ENVIRONMENT SETTINGS
+# ================================================================
+settings:
+  max_steps: 100
+  reproducible: true
+  deterministic: true
+  seed: 42
+  total_bugs: 33
+  bugs_per_difficulty: 11
+
+# ================================================================
+# INFRASTRUCTURE
+# Must fit within hackathon limits
+# ================================================================
+infrastructure:
+  max_runtime_minutes: 20
+  max_memory_gb: 8
+  max_vcpu: 2
+  port: 7860
+  framework: fastapi
+
+# ================================================================
+# DATASET SOURCES
+# Shows judges our data is from real authorised sources
+# ================================================================
+dataset:
+  sources:
+    - name: SWE-Bench
+      url: https://www.swebench.com
+      description: Real GitHub issues from popular Python repos
+      bugs_used: 2
+
+    - name: QuixBugs
+      url: https://github.com/jkoppel/QuixBugs
+      description: Classic algorithm bugs with test cases
+      bugs_used: 1
+
+    - name: Handcrafted
+      description: >
+        Original bugs designed to test specific scenarios
+        including semantic duplicates, OS-specific bugs,
+        red herring logs, and OOO assignment
+      bugs_used: 30
+
+  total_bugs: 33
+  language: python
+  difficulty_distribution:
+    easy: 11
+    medium: 11
+    hard: 11

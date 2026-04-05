@@ -1,0 +1,29 @@
+# Virtual environment - never upload this!
+venv/
+
+# Real tokens - never upload this!
+.env
+
+# Python cache files - not needed
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Distribution files
+*.egg-info/
+dist/
+build/
+
+# Mac junk files
+.DS_Store
+
+# VS Code settings
+.vscode/
+
+# Pytest cache
+.pytest_cache/
+
+# Temporary files
+*.tmp
+*.log

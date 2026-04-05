@@ -1,0 +1,973 @@
+{
+  "bugs": [
+    {
+      "bug_id": "EASY-001",
+      "difficulty": "easy",
+      "task_type": "find_error_line",
+      "bug_category": "SyntaxError - Missing Colon",
+      "bug_title": "Missing colon in function definition",
+      "bug_description": "A function is defined but the colon is missing at the end of the def line.",
+      "buggy_code": "def calculate_area(radius)\n    return 3.14 * radius * radius",
+      "correct_answer": {
+        "error_line": 1,
+        "error_type": "SyntaxError",
+        "wrong_code": "def calculate_area(radius)",
+        "fixed_code": "def calculate_area(radius):",
+        "explanation": "Function definitions in Python must end with a colon"
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "EASY-002",
+      "difficulty": "easy",
+      "task_type": "find_error_line",
+      "bug_category": "IndentationError",
+      "bug_title": "Indentation error in if block",
+      "bug_description": "The return statement inside the if block is not indented correctly.",
+      "buggy_code": "def is_positive(n):\n    if n > 0:\n    return True\n    return False",
+      "correct_answer": {
+        "error_line": 3,
+        "error_type": "IndentationError",
+        "wrong_code": "    return True",
+        "fixed_code": "        return True",
+        "explanation": "Code inside an if block must be indented one extra level"
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "EASY-003",
+      "difficulty": "easy",
+      "task_type": "find_error_line",
+      "bug_category": "NameError - Typo",
+      "bug_title": "Typo in variable name causes NameError",
+      "bug_description": "Variable total is defined but referenced as totol due to a typo.",
+      "buggy_code": "def sum_numbers(a, b):\n    total = a + b\n    return totol",
+      "correct_answer": {
+        "error_line": 3,
+        "error_type": "NameError",
+        "wrong_code": "return totol",
+        "fixed_code": "return total",
+        "explanation": "Variable name is misspelled. totol should be total"
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "EASY-004",
+      "difficulty": "easy",
+      "task_type": "find_error_line",
+      "bug_category": "SyntaxError - Missing Parenthesis",
+      "bug_title": "Missing closing parenthesis in print",
+      "bug_description": "The print function call is missing its closing parenthesis.",
+      "buggy_code": "def greet(name):\n    print(\"Hello, \" + name\n    return name",
+      "correct_answer": {
+        "error_line": 2,
+        "error_type": "SyntaxError",
+        "wrong_code": "    print(\"Hello, \" + name",
+        "fixed_code": "    print(\"Hello, \" + name)",
+        "explanation": "Every opening parenthesis must have a matching closing parenthesis"
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "EASY-005",
+      "difficulty": "easy",
+      "task_type": "find_error_line",
+      "bug_category": "TypeError - String + Integer",
+      "bug_title": "Adding string and integer directly",
+      "bug_description": "The function tries to concatenate a string with an integer without converting it.",
+      "buggy_code": "def show_age(name, age):\n    message = \"Age of \" + name + \" is \" + age\n    return message",
+      "correct_answer": {
+        "error_line": 2,
+        "error_type": "TypeError",
+        "wrong_code": "    message = \"Age of \" + name + \" is \" + age",
+        "fixed_code": "    message = \"Age of \" + name + \" is \" + str(age)",
+        "explanation": "Cannot concatenate string and integer. Must convert age to string using str()"
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "EASY-006",
+      "difficulty": "easy",
+      "task_type": "find_error_line",
+      "bug_category": "SyntaxError - Missing Quote",
+      "bug_title": "String literal missing closing quote",
+      "bug_description": "A string is opened with a quote but never closed.",
+      "buggy_code": "def get_message():\n    msg = \"Hello World\n    return msg",
+      "correct_answer": {
+        "error_line": 2,
+        "error_type": "SyntaxError",
+        "wrong_code": "    msg = \"Hello World",
+        "fixed_code": "    msg = \"Hello World\"",
+        "explanation": "Every opening quote must have a matching closing quote"
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "EASY-007",
+      "difficulty": "easy",
+      "task_type": "find_error_line",
+      "bug_category": "IndexError",
+      "bug_title": "Accessing list index that does not exist",
+      "bug_description": "The function tries to access index 5 of a list that may have fewer elements.",
+      "buggy_code": "def get_last(items):\n    return items[5]",
+      "correct_answer": {
+        "error_line": 2,
+        "error_type": "IndexError",
+        "wrong_code": "    return items[5]",
+        "fixed_code": "    return items[-1]",
+        "explanation": "List index 5 does not exist. Use items[-1] to safely get the last element"
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "EASY-008",
+      "difficulty": "easy",
+      "task_type": "find_error_line",
+      "bug_category": "AttributeError - Wrong Method",
+      "bug_title": "Calling non-existent string method",
+      "bug_description": "The function calls .uppercased() which does not exist. The correct method is .upper()",
+      "buggy_code": "def shout(text):\n    return text.uppercased()",
+      "correct_answer": {
+        "error_line": 2,
+        "error_type": "AttributeError",
+        "wrong_code": "    return text.uppercased()",
+        "fixed_code": "    return text.upper()",
+        "explanation": "Python strings have .upper() not .uppercased(). Wrong method name was used"
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "EASY-009",
+      "difficulty": "easy",
+      "task_type": "find_error_line",
+      "bug_category": "ZeroDivisionError",
+      "bug_title": "Division by zero without checking",
+      "bug_description": "The function divides by a parameter without checking if it is zero.",
+      "buggy_code": "def divide(a, b):\n    return a / b",
+      "correct_answer": {
+        "error_line": 2,
+        "error_type": "ZeroDivisionError",
+        "wrong_code": "    return a / b",
+        "fixed_code": "    if b == 0:\n        raise ValueError(\"Cannot divide by zero\")\n    return a / b",
+        "explanation": "Must check if b is zero before dividing"
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "EASY-010",
+      "difficulty": "easy",
+      "task_type": "find_error_line",
+      "bug_category": "Missing Return",
+      "bug_title": "Function missing return statement",
+      "bug_description": "The function calculates a result but never returns it. It always returns None.",
+      "buggy_code": "def square(n):\n    result = n * n",
+      "correct_answer": {
+        "error_line": 2,
+        "error_type": "LogicError - Missing Return",
+        "wrong_code": "    result = n * n",
+        "fixed_code": "    result = n * n\n    return result",
+        "explanation": "Function calculates result but never returns it. Caller receives None instead of the value"
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "MEDIUM-001",
+      "difficulty": "medium",
+      "task_type": "find_and_explain",
+      "bug_category": "Off By One",
+      "bug_title": "Range misses last element",
+      "bug_description": "Loop uses range(len-1) which stops one index too early and never adds the last number.",
+      "buggy_code": "def sum_list(nums):\n    total = 0\n    for i in range(len(nums) - 1):\n        total += nums[i]\n    return total",
+      "correct_answer": {
+        "error_line": 3,
+        "error_type": "LogicError - Off By One",
+        "wrong_code": "    for i in range(len(nums) - 1):",
+        "fixed_code": "    for i in range(len(nums)):",
+        "explanation": "range(len-1) stops before the last index",
+        "edge_cases": [
+          "single element list fails",
+          "last element always missed",
+          "empty list returns 0 correctly"
+        ]
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "MEDIUM-002",
+      "difficulty": "medium",
+      "task_type": "find_and_explain",
+      "bug_category": "Wrong Comparison Operator",
+      "bug_title": "Age check uses wrong operator",
+      "bug_description": "Function checks age > 18 but should check age >= 18. An 18-year-old is wrongly classified.",
+      "buggy_code": "def is_adult(age):\n    if age > 18:\n        return True\n    return False",
+      "correct_answer": {
+        "error_line": 2,
+        "error_type": "LogicError - Wrong Comparison",
+        "wrong_code": "    if age > 18:",
+        "fixed_code": "    if age >= 18:",
+        "explanation": "age > 18 means 18-year-olds are not adults. Should be >= 18",
+        "edge_cases": [
+          "age exactly 18 fails",
+          "negative age not handled",
+          "age 0 works correctly"
+        ]
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "MEDIUM-003",
+      "difficulty": "medium",
+      "task_type": "find_and_explain",
+      "bug_category": "Assignment Instead of Increment",
+      "bug_title": "Counter not incrementing correctly",
+      "bug_description": "Function assigns count = 1 instead of count += 1. Counter resets every even number found.",
+      "buggy_code": "def count_evens(numbers):\n    count = 0\n    for n in numbers:\n        if n % 2 == 0:\n            count = 1\n    return count",
+      "correct_answer": {
+        "error_line": 5,
+        "error_type": "LogicError - Assignment Instead of Increment",
+        "wrong_code": "            count = 1",
+        "fixed_code": "            count += 1",
+        "explanation": "count = 1 resets counter to 1 every time. count += 1 correctly increments",
+        "edge_cases": [
+          "all evens returns 1 instead of total length",
+          "mixed list returns 1 not actual count",
+          "no evens returns 0 correctly"
+        ]
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "MEDIUM-004",
+      "difficulty": "medium",
+      "task_type": "find_and_explain",
+      "bug_category": "Inverted Condition",
+      "bug_title": "Password validation logic is inverted",
+      "bug_description": "Returns True when password is too short and False when it is long enough.",
+      "buggy_code": "def is_valid_password(password):\n    if len(password) < 8:\n        return True\n    return False",
+      "correct_answer": {
+        "error_line": 2,
+        "error_type": "LogicError - Inverted Condition",
+        "wrong_code": "    if len(password) < 8:\n        return True",
+        "fixed_code": "    if len(password) >= 8:\n        return True",
+        "explanation": "Condition is inverted. Short passwords return True (valid) which is wrong",
+        "edge_cases": [
+          "empty string returns True (wrong)",
+          "exactly 8 chars returns False (wrong)",
+          "very long password returns False (wrong)"
+        ]
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "MEDIUM-005",
+      "difficulty": "medium",
+      "task_type": "find_and_explain",
+      "bug_category": "Mutating List During Iteration",
+      "bug_title": "Removing items from list during iteration",
+      "bug_description": "Function removes items from a list while looping over it. Python skips elements silently.",
+      "buggy_code": "def remove_negatives(numbers):\n    for n in numbers:\n        if n < 0:\n            numbers.remove(n)\n    return numbers",
+      "correct_answer": {
+        "error_line": 4,
+        "error_type": "LogicError - Mutating List During Iteration",
+        "wrong_code": "            numbers.remove(n)",
+        "fixed_code": "    return [n for n in numbers if n >= 0]",
+        "explanation": "Removing from list while iterating skips elements. Use list comprehension instead",
+        "edge_cases": [
+          "consecutive negatives partially survive",
+          "all negatives - some survive",
+          "empty list works fine"
+        ]
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "MEDIUM-006",
+      "difficulty": "medium",
+      "task_type": "find_and_explain",
+      "bug_category": "Mutable Default Argument",
+      "bug_title": "Mutable default argument shared across calls",
+      "bug_description": "Using a list as default argument means all calls share the same list object.",
+      "buggy_code": "def add_item(item, cart=[]):\n    cart.append(item)\n    return cart",
+      "correct_answer": {
+        "error_line": 1,
+        "error_type": "LogicError - Mutable Default Argument",
+        "wrong_code": "def add_item(item, cart=[]):",
+        "fixed_code": "def add_item(item, cart=None):\n    if cart is None:\n        cart = []",
+        "explanation": "Default list [] is created once and shared across all calls that omit cart argument",
+        "edge_cases": [
+          "second call without cart has items from first call",
+          "explicit empty list arg works fine",
+          "classic Python gotcha"
+        ]
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "MEDIUM-007",
+      "difficulty": "medium",
+      "task_type": "find_and_explain",
+      "bug_category": "Integer Division",
+      "bug_title": "Average loses decimal precision",
+      "bug_description": "Uses // floor division so average([1,2]) returns 1 instead of 1.5.",
+      "buggy_code": "def average(numbers):\n    return sum(numbers) // len(numbers)",
+      "correct_answer": {
+        "error_line": 2,
+        "error_type": "LogicError - Integer Division",
+        "wrong_code": "    return sum(numbers) // len(numbers)",
+        "fixed_code": "    return sum(numbers) / len(numbers)",
+        "explanation": "// is floor division which drops decimals. Use / for true decimal division",
+        "edge_cases": [
+          "[1,2] returns 1 instead of 1.5",
+          "empty list causes ZeroDivisionError",
+          "[3,3] returns 3 correctly by accident"
+        ]
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "MEDIUM-008",
+      "difficulty": "medium",
+      "task_type": "find_and_explain",
+      "bug_category": "Case Sensitive Comparison",
+      "bug_title": "Case-sensitive comparison misses valid input",
+      "bug_description": "Checks command == quit but QUIT or Quit are not recognized as valid.",
+      "buggy_code": "def should_exit(command):\n    if command == \"quit\":\n        return True\n    return False",
+      "correct_answer": {
+        "error_line": 2,
+        "error_type": "LogicError - Case Sensitive Comparison",
+        "wrong_code": "    if command == \"quit\":",
+        "fixed_code": "    if command.lower() == \"quit\":",
+        "explanation": "Direct comparison is case sensitive. Quit and QUIT both return False incorrectly",
+        "edge_cases": [
+          "QUIT returns False (wrong)",
+          "Quit returns False (wrong)",
+          "None input causes AttributeError"
+        ]
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "MEDIUM-009",
+      "difficulty": "medium",
+      "task_type": "find_and_explain",
+      "bug_category": "Reference Not Copy",
+      "bug_title": "List assignment creates reference not copy",
+      "bug_description": "copy = numbers creates a reference. Modifying copy also changes original list.",
+      "buggy_code": "def double_first(numbers):\n    copy = numbers\n    copy[0] = copy[0] * 2\n    return copy",
+      "correct_answer": {
+        "error_line": 2,
+        "error_type": "LogicError - Reference Not Copy",
+        "wrong_code": "    copy = numbers",
+        "fixed_code": "    copy = numbers.copy()",
+        "explanation": "= does not copy a list. It makes another reference to same object. Use .copy()",
+        "edge_cases": [
+          "original list is silently modified",
+          "empty list works fine",
+          "nested lists need deepcopy"
+        ]
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "MEDIUM-010",
+      "difficulty": "medium",
+      "task_type": "find_and_explain",
+      "bug_category": "Missing Base Case in Recursion",
+      "bug_title": "Recursive function has no base case",
+      "bug_description": "Factorial calls itself recursively but never stops. Crashes with RecursionError.",
+      "buggy_code": "def factorial(n):\n    return n * factorial(n - 1)",
+      "correct_answer": {
+        "error_line": 1,
+        "error_type": "RecursionError - Missing Base Case",
+        "wrong_code": "def factorial(n):",
+        "fixed_code": "def factorial(n):\n    if n == 0 or n == 1:\n        return 1\n    return n * factorial(n - 1)",
+        "explanation": "No base case means recursion never stops. Must return 1 when n is 0 or 1",
+        "edge_cases": [
+          "any input causes infinite recursion",
+          "factorial(0) should return 1",
+          "negative numbers recurse forever"
+        ]
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "HARD-001",
+      "difficulty": "hard",
+      "task_type": "full_review",
+      "bug_category": "UnboundLocalError",
+      "bug_title": "Variable referenced before assignment",
+      "bug_description": "The function uses variable kern before it is defined on the next line.",
+      "buggy_code": "def kernS(s):\n    hit = kern in s\n    kern = s.split()[0]\n    return kern",
+      "error_logs": [
+        {
+          "timestamp": "10:21:00",
+          "error": "MemoryWarning: cache size 90%",
+          "relevant": false
+        },
+        {
+          "timestamp": "10:21:44",
+          "error": "UnboundLocalError: local variable kern referenced before assignment",
+          "relevant": true
+        },
+        {
+          "timestamp": "10:21:45",
+          "error": "ConnectionPool: timeout after 30s",
+          "relevant": false
+        },
+        {
+          "timestamp": "10:21:46",
+          "error": "WARNING: retry attempt 1",
+          "relevant": false
+        }
+      ],
+      "correct_answer": {
+        "error_line": 2,
+        "error_type": "UnboundLocalError",
+        "relevant_log_timestamp": "10:21:44",
+        "root_cause": "kern is used on line 2 but assigned on line 3. Python treats kern as local throughout function so using before assignment fails",
+        "fixed_code": "def kernS(s):\n    kern = s.split()[0]\n    hit = kern in s\n    return kern",
+        "assigned_team": "Core Library Team",
+        "is_duplicate": false
+      },
+      "source": "SWE-Bench inspired"
+    },
+    {
+      "bug_id": "HARD-002",
+      "difficulty": "hard",
+      "task_type": "full_review",
+      "bug_category": "Race Condition",
+      "bug_title": "Counter is not thread safe",
+      "bug_description": "Multiple threads increment shared counter without locking. Some increments are lost.",
+      "buggy_code": "import threading\n\ncounter = 0\n\ndef increment():\n    global counter\n    temp = counter\n    temp += 1\n    counter = temp",
+      "error_logs": [
+        {
+          "timestamp": "11:00:01",
+          "error": "INFO: Starting 1000 threads",
+          "relevant": false
+        },
+        {
+          "timestamp": "11:00:03",
+          "error": "WARNING: counter value inconsistent across runs",
+          "relevant": true
+        },
+        {
+          "timestamp": "11:00:03",
+          "error": "INFO: Expected 1000 got 987",
+          "relevant": true
+        },
+        {
+          "timestamp": "11:00:04",
+          "error": "INFO: All threads completed",
+          "relevant": false
+        }
+      ],
+      "correct_answer": {
+        "error_line": 6,
+        "error_type": "Race Condition - Missing Lock",
+        "relevant_log_timestamp": "11:00:03",
+        "root_cause": "Read-modify-write of counter is not atomic. Two threads read same value and both write same incremented value losing one increment",
+        "fixed_code": "lock = threading.Lock()\ndef increment():\n    global counter\n    with lock:\n        counter += 1",
+        "assigned_team": "Backend Concurrency Team",
+        "is_duplicate": false
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "HARD-003",
+      "difficulty": "hard",
+      "task_type": "full_review",
+      "bug_category": "Semantic Duplicate",
+      "bug_title": "Login failure is duplicate of auth token bug",
+      "bug_description": "Two bug reports describe the same root cause in different technical language.",
+      "buggy_code": "def validate_token(token):\n    payload = jwt.decode(token)\n    if payload.user_id in active_sessions:\n        return True\n    return authenticate(token)",
+      "error_logs": [
+        {
+          "timestamp": "09:00:01",
+          "error": "GET /api/login 200 OK",
+          "relevant": false
+        },
+        {
+          "timestamp": "09:00:02",
+          "error": "POST /api/auth/token 500 Internal Server Error",
+          "relevant": true
+        },
+        {
+          "timestamp": "09:00:02",
+          "error": "ERROR: endpoint /api/authenticate not found",
+          "relevant": true
+        },
+        {
+          "timestamp": "09:00:03",
+          "error": "UI: login button click event fired",
+          "relevant": false
+        }
+      ],
+      "previous_bugs": [
+        {
+          "bug_id": "BUG-101",
+          "title": "JWT auth token returns 500 error",
+          "description": "Token validation endpoint fails with 500",
+          "technical_terms": [
+            "JWT",
+            "auth token",
+            "500 error",
+            "token validation"
+          ],
+          "status": "open"
+        }
+      ],
+      "correct_answer": {
+        "error_line": 5,
+        "error_type": "RuntimeError - Deleted Endpoint Called",
+        "relevant_log_timestamp": "09:00:02",
+        "root_cause": "authenticate() calls a deleted endpoint. Login button triggers auth flow that calls this broken function. Both bugs have same root cause",
+        "is_duplicate": true,
+        "duplicate_of": "BUG-101",
+        "duplicate_reasoning": "Login not working is caused by JWT token failure. Same root cause: authenticate() calls deleted endpoint",
+        "assigned_team": "Auth Team",
+        "fixed_code": "def validate_token(token):\n    payload = jwt.decode(token)\n    if payload.user_id in active_sessions:\n        return True\n    return False"
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "HARD-004",
+      "difficulty": "hard",
+      "task_type": "full_review",
+      "bug_category": "OS-Specific Bug",
+      "bug_title": "File path separator breaks on Windows",
+      "bug_description": "Code uses forward slash which works on Linux/Mac but fails on Windows.",
+      "buggy_code": "def get_config_path(base_dir, filename):\n    return base_dir + \"/\" + filename",
+      "os_details": {
+        "affected": "Windows 10, Windows 11",
+        "not_affected": "Ubuntu 22.04, macOS 13, Arch Linux"
+      },
+      "error_logs": [
+        {
+          "timestamp": "14:00:01",
+          "error": "INFO: Starting app on Windows",
+          "relevant": false
+        },
+        {
+          "timestamp": "14:00:02",
+          "error": "FileNotFoundError: config/settings.json not found",
+          "relevant": true
+        },
+        {
+          "timestamp": "14:00:02",
+          "error": "ERROR: App startup failed",
+          "relevant": true
+        },
+        {
+          "timestamp": "14:00:03",
+          "error": "INFO: Works fine on Ubuntu test server",
+          "relevant": false
+        }
+      ],
+      "correct_answer": {
+        "error_line": 2,
+        "error_type": "OS-Specific Bug - Path Separator",
+        "relevant_log_timestamp": "14:00:02",
+        "root_cause": "Hardcoded forward slash fails on Windows which uses backslash. Use os.path.join() for cross-platform compatibility",
+        "fixed_code": "import os\ndef get_config_path(base_dir, filename):\n    return os.path.join(base_dir, filename)",
+        "affected_environments": [
+          "Windows 10",
+          "Windows 11"
+        ],
+        "not_affected_environments": [
+          "Ubuntu 22.04",
+          "macOS 13",
+          "Arch Linux"
+        ],
+        "assigned_team": "Platform Compatibility Team",
+        "is_duplicate": false
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "HARD-005",
+      "difficulty": "hard",
+      "task_type": "full_review",
+      "bug_category": "Memory Leak",
+      "bug_title": "Database connection never closed",
+      "bug_description": "Every call opens a DB connection but never closes it. Connections accumulate until exhausted.",
+      "buggy_code": "def get_user(user_id):\n    conn = database.connect()\n    cursor = conn.cursor()\n    cursor.execute(\"SELECT * FROM users WHERE id = ?\", (user_id,))\n    user = cursor.fetchone()\n    return user",
+      "error_logs": [
+        {
+          "timestamp": "16:00:01",
+          "error": "INFO: Server started",
+          "relevant": false
+        },
+        {
+          "timestamp": "16:30:00",
+          "error": "WARNING: Active DB connections 450/500",
+          "relevant": true
+        },
+        {
+          "timestamp": "16:45:00",
+          "error": "CRITICAL: DB connection pool exhausted",
+          "relevant": true
+        },
+        {
+          "timestamp": "16:45:01",
+          "error": "ERROR: Server response time 8000ms",
+          "relevant": false
+        }
+      ],
+      "correct_answer": {
+        "error_line": 2,
+        "error_type": "Resource Leak - Connection Not Closed",
+        "relevant_log_timestamp": "16:30:00",
+        "root_cause": "database.connect() opens connection but conn.close() never called. Each call leaks one connection. After hundreds of calls pool is exhausted",
+        "fixed_code": "def get_user(user_id):\n    with database.connect() as conn:\n        cursor = conn.cursor()\n        cursor.execute(\"SELECT * FROM users WHERE id = ?\", (user_id,))\n        return cursor.fetchone()",
+        "assigned_team": "Database Team",
+        "is_duplicate": false
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "HARD-006",
+      "difficulty": "hard",
+      "task_type": "full_review",
+      "bug_category": "SQL Injection",
+      "bug_title": "User input directly in SQL query",
+      "bug_description": "Function builds SQL by concatenating user input. Attacker can inject SQL to read all data.",
+      "buggy_code": "def find_user(username):\n    query = \"SELECT * FROM users WHERE name = '\" + username + \"'\"\n    return db.execute(query)",
+      "error_logs": [
+        {
+          "timestamp": "20:00:01",
+          "error": "INFO: Login attempt for user admin",
+          "relevant": false
+        },
+        {
+          "timestamp": "20:00:01",
+          "error": "DB: SELECT * FROM users WHERE name = admin--",
+          "relevant": true
+        },
+        {
+          "timestamp": "20:00:01",
+          "error": "DB: Returned all user records",
+          "relevant": true
+        },
+        {
+          "timestamp": "20:00:02",
+          "error": "WARNING: Unusual data volume in response",
+          "relevant": false
+        }
+      ],
+      "correct_answer": {
+        "error_line": 2,
+        "error_type": "Security Bug - SQL Injection",
+        "relevant_log_timestamp": "20:00:01",
+        "root_cause": "String concatenation with user input allows SQL injection. Attacker inputs admin-- to bypass authentication and access all records",
+        "fixed_code": "def find_user(username):\n    query = \"SELECT * FROM users WHERE name = ?\"\n    return db.execute(query, (username,))",
+        "assigned_team": "Security Team",
+        "is_duplicate": false
+      },
+      "source": "OWASP inspired"
+    },
+    {
+      "bug_id": "HARD-007",
+      "difficulty": "hard",
+      "task_type": "full_review",
+      "bug_category": "Missing Await",
+      "bug_title": "Async function result not awaited",
+      "bug_description": "An async function is called without await. Code receives coroutine object not actual data.",
+      "buggy_code": "async def fetch_data(url):\n    response = await http.get(url)\n    return response.json()\n\nasync def process():\n    data = fetch_data(\"https://api.example.com/data\")\n    if data:\n        print(\"Got data:\", data)",
+      "error_logs": [
+        {
+          "timestamp": "08:00:01",
+          "error": "INFO: Starting data fetch",
+          "relevant": false
+        },
+        {
+          "timestamp": "08:00:01",
+          "error": "WARNING: coroutine fetch_data was never awaited",
+          "relevant": true
+        },
+        {
+          "timestamp": "08:00:01",
+          "error": "OUTPUT: Got data: coroutine object fetch_data",
+          "relevant": true
+        },
+        {
+          "timestamp": "08:00:02",
+          "error": "INFO: Process complete",
+          "relevant": false
+        }
+      ],
+      "correct_answer": {
+        "error_line": 6,
+        "error_type": "AsyncError - Missing Await",
+        "relevant_log_timestamp": "08:00:01",
+        "root_cause": "fetch_data is async. Calling without await returns coroutine object not data. if data passes because coroutine objects are always truthy",
+        "fixed_code": "async def process():\n    data = await fetch_data(\"https://api.example.com/data\")\n    if data:\n        print(\"Got data:\", data)",
+        "assigned_team": "Backend API Team",
+        "is_duplicate": false
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "HARD-008",
+      "difficulty": "hard",
+      "task_type": "full_review",
+      "bug_category": "OOO Assignment",
+      "bug_title": "Critical payment bug with unavailable expert",
+      "bug_description": "Payment bug needs Alice who is on vacation. Must assign to backup Bob instead.",
+      "buggy_code": "def process_payment(amount, currency):\n    if currency != \"USD\":\n        rate = exchange_rates[currency]\n        amount = amount * rate\n    charge = payment_gateway.charge(amount)\n    return charge",
+      "error_logs": [
+        {
+          "timestamp": "12:00:01",
+          "error": "INFO: Payment initiated EUR 100",
+          "relevant": false
+        },
+        {
+          "timestamp": "12:00:01",
+          "error": "KeyError: EUR not found in exchange_rates",
+          "relevant": true
+        },
+        {
+          "timestamp": "12:00:01",
+          "error": "CRITICAL: Payment failed for order 4521",
+          "relevant": true
+        },
+        {
+          "timestamp": "12:00:02",
+          "error": "INFO: Retry scheduled",
+          "relevant": false
+        }
+      ],
+      "available_developers": [
+        {
+          "name": "Alice",
+          "expertise": [
+            "payments",
+            "currency",
+            "gateway"
+          ],
+          "is_available": false,
+          "fallback": "Bob"
+        },
+        {
+          "name": "Bob",
+          "expertise": [
+            "payments",
+            "backend",
+            "currency"
+          ],
+          "is_available": true,
+          "fallback": null
+        },
+        {
+          "name": "Carol",
+          "expertise": [
+            "frontend",
+            "UI"
+          ],
+          "is_available": true,
+          "fallback": null
+        }
+      ],
+      "correct_answer": {
+        "error_line": 3,
+        "error_type": "KeyError - Missing Currency in Dict",
+        "relevant_log_timestamp": "12:00:01",
+        "root_cause": "exchange_rates dict does not contain all currencies. Accessing missing key crashes instead of raising clear error",
+        "fixed_code": "def process_payment(amount, currency):\n    if currency != \"USD\":\n        if currency not in exchange_rates:\n            raise ValueError(f\"Unsupported currency: {currency}\")\n        rate = exchange_rates[currency]\n        amount = amount * rate\n    charge = payment_gateway.charge(amount)\n    return charge",
+        "assigned_developer": "Bob",
+        "fallback_developer": null,
+        "assigned_team": "Payments Team",
+        "is_duplicate": false
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "HARD-009",
+      "difficulty": "hard",
+      "task_type": "full_review",
+      "bug_category": "Circular Import",
+      "bug_title": "Circular import causes ImportError at startup",
+      "bug_description": "Module A imports Module B and Module B imports Module A. Python cannot resolve this.",
+      "buggy_code": "# models.py\nfrom services import UserService\n\nclass User:\n    def save(self):\n        UserService.validate(self)\n\n# services.py\nfrom models import User\n\nclass UserService:\n    def validate(user):\n        return user.name != \"\"",
+      "error_logs": [
+        {
+          "timestamp": "07:00:01",
+          "error": "INFO: Starting application",
+          "relevant": false
+        },
+        {
+          "timestamp": "07:00:01",
+          "error": "ImportError: cannot import name User from partially initialized module models",
+          "relevant": true
+        },
+        {
+          "timestamp": "07:00:01",
+          "error": "TRACE: models -> services -> models circular",
+          "relevant": true
+        },
+        {
+          "timestamp": "07:00:01",
+          "error": "CRITICAL: Application failed to start",
+          "relevant": false
+        }
+      ],
+      "correct_answer": {
+        "error_line": 2,
+        "error_type": "ImportError - Circular Import",
+        "relevant_log_timestamp": "07:00:01",
+        "root_cause": "models.py imports services.py and services.py imports models.py. Python starts loading models, tries to load services, tries to load models again which is not finished yet",
+        "fixed_code": "from __future__ import annotations\nfrom typing import TYPE_CHECKING\nif TYPE_CHECKING:\n    from models import User\n\nclass UserService:\n    def validate(user: User):\n        return user.name != \"\"",
+        "assigned_team": "Architecture Team",
+        "is_duplicate": false
+      },
+      "source": "handcrafted"
+    },
+    {
+      "bug_id": "HARD-010",
+      "difficulty": "hard",
+      "task_type": "full_review",
+      "bug_category": "Silent Data Loss",
+      "bug_title": "DataFrame groupby silently drops None groups",
+      "bug_description": "When DataFrame column has None values groupby silently excludes those rows. Users data is lost without warning.",
+      "buggy_code": "import pandas as pd\n\ndef group_sales(df):\n    grouped = df.groupby(\"region\")\n    return grouped[\"sales\"].sum()",
+      "error_logs": [
+        {
+          "timestamp": "15:00:01",
+          "error": "INFO: Processing 1000 sales records",
+          "relevant": false
+        },
+        {
+          "timestamp": "15:00:02",
+          "error": "WARNING: groupby result has 950 rows not 1000",
+          "relevant": true
+        },
+        {
+          "timestamp": "15:00:02",
+          "error": "INFO: 50 records have region=None",
+          "relevant": true
+        },
+        {
+          "timestamp": "15:00:03",
+          "error": "INFO: Groupby complete",
+          "relevant": false
+        }
+      ],
+      "correct_answer": {
+        "error_line": 4,
+        "error_type": "LogicError - Silent Data Loss in groupby",
+        "relevant_log_timestamp": "15:00:02",
+        "root_cause": "pandas groupby drops NaN/None values by default with dropna=True. Must pass dropna=False to include None groups and prevent silent data loss",
+        "fixed_code": "def group_sales(df):\n    grouped = df.groupby(\"region\", dropna=False)\n    return grouped[\"sales\"].sum()",
+        "assigned_team": "Data Engineering Team",
+        "is_duplicate": false
+      },
+      "source": "pandas GitHub issues inspired"
+    },
+    {
+      "bug_id": "REAL-EASY-001",
+      "difficulty": "easy",
+      "task_type": "find_error_line",
+      "bug_category": "LogicError - Wrong Bitwise Operator",
+      "bug_title": "BITCOUNT uses XOR instead of AND",
+      "bug_description": "The bitcount function counts set bits in an integer. It uses XOR with n-1 but should use AND with n-1. XOR does not correctly clear the lowest set bit.",
+      "buggy_code": "def bitcount(n):\n    count = 0\n    while n != 0:\n        n = n ^ (n - 1)\n        count += 1\n    return count",
+      "test_cases": [
+        "assert bitcount(0) == 0",
+        "assert bitcount(1) == 1",
+        "assert bitcount(2) == 1",
+        "assert bitcount(3) == 2",
+        "assert bitcount(7) == 3",
+        "assert bitcount(8) == 1",
+        "assert bitcount(255) == 8"
+      ],
+      "correct_answer": {
+        "error_line": 4,
+        "error_type": "LogicError - Wrong Bitwise Operator",
+        "wrong_code": "        n = n ^ (n - 1)",
+        "fixed_code": "        n = n & (n - 1)",
+        "explanation": "n & (n-1) clears the lowest set bit each iteration so count equals total set bits. n ^ (n-1) flips bits instead of clearing them giving wrong count"
+      },
+      "source": "QuixBugs dataset - BITCOUNT"
+    },
+    {
+      "bug_id": "REAL-MEDIUM-001",
+      "difficulty": "medium",
+      "task_type": "find_and_explain",
+      "bug_category": "Encoding Bug - Wrong Default Encoding",
+      "bug_title": "pysnooper uses ascii instead of utf-8 encoding",
+      "bug_description": "When reading source code from frames, the code defaults to ascii encoding. This breaks for any source file with non-ASCII characters like unicode strings or comments in other languages.",
+      "buggy_code": "def get_source_from_frame(frame):\n    source = inspect.getsourcelines(frame)[0]\n    if isinstance(source[0], bytes):\n        encoding = 'ascii'\n        for line in source[:2]:\n            match = coding_pattern.search(line)\n            if match:\n                encoding = match.group(1).decode('ascii')\n                break\n    return source",
+      "test_cases": [
+        "assert detect_encoding([b'# unicode: \\xc3\\xa9\\n']) == 'utf-8'",
+        "assert detect_encoding(['x = 1\\n']) == 'utf-8'"
+      ],
+      "correct_answer": {
+        "error_line": 4,
+        "error_type": "EncodingError - Wrong Default Encoding",
+        "wrong_code": "        encoding = 'ascii'",
+        "fixed_code": "        encoding = 'utf-8'",
+        "explanation": "ascii cannot handle unicode characters. Default must be utf-8 which handles all unicode source files and is backwards compatible with ascii",
+        "edge_cases": [
+          "source files with unicode comments fail with ascii",
+          "non-latin variable names crash entirely",
+          "files with explicit coding declaration work by accident",
+          "utf-8 BOM files not handled correctly"
+        ]
+      },
+      "source": "SWE-Bench - pysnooper__pysnooper-PR-168"
+    },
+    {
+      "bug_id": "REAL-HARD-001",
+      "difficulty": "hard",
+      "task_type": "full_review",
+      "bug_category": "File Encoding - Missing encoding parameter",
+      "bug_title": "FileWriter opens files without specifying encoding",
+      "bug_description": "FileWriter opens files without encoding parameter. On Windows the default is cp1252 not utf-8, corrupting unicode content. Works on Linux by accident since Linux defaults to utf-8.",
+      "buggy_code": "class FileWriter(object):\n    def __init__(self, path, overwrite):\n        self.path = path\n        self.overwrite = overwrite\n\n    def write(self, s):\n        with open(self.path, 'w' if self.overwrite else 'a') as output_file:\n            output_file.write(s)\n        self.overwrite = False",
+      "test_cases": [
+        "import tempfile\nfw = FileWriter(tempfile.mktemp(), True)\nfw.write('unicode test: cafe')\nwith open(fw.path, encoding='utf-8') as f:\n    assert 'cafe' in f.read()"
+      ],
+      "error_logs": [
+        {
+          "timestamp": "09:00:01",
+          "error": "INFO: FileWriter initialized",
+          "relevant": false
+        },
+        {
+          "timestamp": "09:00:02",
+          "error": "UnicodeEncodeError: codec cp1252 cannot encode character",
+          "relevant": true
+        },
+        {
+          "timestamp": "09:00:02",
+          "error": "ERROR: write() failed on Windows machine",
+          "relevant": true
+        },
+        {
+          "timestamp": "09:00:03",
+          "error": "INFO: Works fine on Linux developer machine",
+          "relevant": false
+        }
+      ],
+      "correct_answer": {
+        "error_line": 7,
+        "error_type": "EncodingError - Missing encoding parameter",
+        "relevant_log_timestamp": "09:00:02",
+        "root_cause": "open() without encoding uses platform default. On Windows this is cp1252 which cannot encode unicode. Must explicitly pass encoding=utf-8 for cross-platform compatibility",
+        "wrong_code": "        with open(self.path, 'w' if self.overwrite else 'a') as output_file:",
+        "fixed_code": "        with open(self.path, 'w' if self.overwrite else 'a', encoding='utf-8') as output_file:",
+        "affected_environments": [
+          "Windows 10",
+          "Windows 11"
+        ],
+        "not_affected_environments": [
+          "Ubuntu 22.04",
+          "macOS 13",
+          "Arch Linux"
+        ],
+        "assigned_team": "Platform Compatibility Team",
+        "is_duplicate": false
+      },
+      "source": "SWE-Bench - pysnooper__pysnooper-PR-168"
+    }
+  ]
+}
