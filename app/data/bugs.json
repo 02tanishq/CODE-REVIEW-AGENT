@@ -822,48 +822,58 @@
             "source": "handcrafted"
         },
         {
-            "bug_id": "HARD-010",
+            "bug_id": "HARD-SWE-001",
             "difficulty": "hard",
             "task_type": "full_review",
-            "bug_category": "Silent Data Loss",
-            "bug_title": "DataFrame groupby silently drops None groups",
-            "bug_description": "When DataFrame column has None values groupby silently excludes those rows. Users data is lost without warning.",
-            "buggy_code": "import pandas as pd\n\ndef group_sales(df):\n    grouped = df.groupby(\"region\")\n    return grouped[\"sales\"].sum()",
+            "bug_category": "SQL Error - Reserved Keyword Not Quoted",
+            "bug_title": "Django loaddata crashes when table name is SQL keyword",
+            "bug_description": "When a Django model is named with a SQL reserved word like Order the loaddata command crashes with sqlite3.OperationalError. The table name is not quoted properly in the PRAGMA foreign_key_check SQL statement causing SQLite to interpret it as a SQL keyword instead of a table name. Confirmed in Django 3.1.0 and 3.1.2.",
+            "buggy_code": "def check_constraints(self, table_names=None):\n    if table_names is None:\n        violations = cursor.execute('PRAGMA foreign_key_check').fetchall()\n    else:\n        violations = chain.from_iterable(\n            cursor.execute('PRAGMA foreign_key_check(%s)' % table_name).fetchall()\n            for table_name in table_names\n        )\n    for table_name, rowid, referenced_table_name, foreign_key_index in violations:\n        foreign_key = cursor.execute(\n            'PRAGMA foreign_key_list(%s)' % table_name\n        ).fetchall()[foreign_key_index]\n        primary_key_value, bad_value = cursor.execute(\n            'SELECT %s, %s FROM %s WHERE rowid = %%s' % (\n                primary_key_column_name, column_name, table_name\n            ), (rowid,)\n        ).fetchone()",
+            "test_cases": [
+                "assert 'PRAGMA foreign_key_check(%s)' % self.ops.quote_name('order') == 'PRAGMA foreign_key_check(`order`)'"
+            ],
             "error_logs": [
                 {
-                    "timestamp": "15:00:01",
-                    "error": "INFO: Processing 1000 sales records",
-                    "relevant": false
+                "timestamp": "09:00:01",
+                "error": "INFO: Starting loaddata for Order model",
+                "relevant": false
                 },
                 {
-                    "timestamp": "15:00:02",
-                    "error": "WARNING: groupby result has 950 rows not 1000",
-                    "relevant": true
+                "timestamp": "09:00:02",
+                "error": "sqlite3.OperationalError: near order: syntax error",
+                "relevant": true
                 },
                 {
-                    "timestamp": "15:00:02",
-                    "error": "INFO: 50 records have region=None",
-                    "relevant": true
+                "timestamp": "09:00:02",
+                "error": "ERROR: (0.000) PRAGMA foreign_key_check(order); args=None",
+                "relevant": true
                 },
                 {
-                    "timestamp": "15:00:03",
-                    "error": "INFO: Groupby complete",
-                    "relevant": false
+                "timestamp": "09:00:03",
+                "error": "WARNING: Database integrity check failed",
+                "relevant": false
+                },
+                {
+                "timestamp": "09:00:04",
+                "error": "INFO: Retrying with different connection",
+                "relevant": false
                 }
             ],
             "correct_answer": {
-                "error_line": 4,
-                "error_type": "LogicError - Silent Data Loss in groupby",
-                "relevant_log_timestamp": "15:00:02",
-                "root_cause": "pandas groupby drops NaN/None values by default with dropna=True. Must pass dropna=False to include None groups and prevent silent data loss",
-                "fixed_code": "def group_sales(df):\n    grouped = df.groupby(\"region\", dropna=False)\n    return grouped[\"sales\"].sum()",
-                "assigned_team": "Data Engineering Team",
-                "is_duplicate": false
+                "error_line": 6,
+                "error_type": "LogicError",
+                "relevant_log_timestamp": "09:00:02",
+                "root_cause": "Table name is inserted directly into SQL string using % formatting without quoting. When table name is a SQL reserved word like order SQLite interprets it as a keyword not a table name. Must use self.ops.quote_name() to wrap table name in backticks so SQLite treats it as an identifier not a keyword",
+                "wrong_code": "            cursor.execute('PRAGMA foreign_key_check(%s)' % table_name).fetchall()",
+                "fixed_code": "            cursor.execute('PRAGMA foreign_key_check(%s)' % self.ops.quote_name(table_name)).fetchall()",
+                "is_duplicate": false,
+                "assigned_team": "Database Backend Team",
+                "assigned_developer": null
             },
-            "source": "pandas GitHub issues inspired"
-        },
-        {
-            "bug_id": "REAL-EASY-001",
+            "source": "SWE-Bench django__django SQL keywords bug"
+            },
+            {
+                "bug_id": "REAL-EASY-001",
             "difficulty": "easy",
             "task_type": "find_error_line",
             "bug_category": "LogicError - Wrong Bitwise Operator",
