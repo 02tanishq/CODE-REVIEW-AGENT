@@ -44,8 +44,8 @@ tasks:
       Agent reads buggy Python code and must identify
       the exact line number and error type.
       Tests basic code reading ability.
-    max_score: 1.0
-    min_score: 0.0
+    max_score: 0.99
+    min_score: 0.01
     scoring:
       error_line: 0.5
       error_type: 0.4
@@ -58,8 +58,8 @@ tasks:
       Agent must find the bug, explain why it is wrong,
       identify edge cases affected, and suggest a fix.
       Tests deeper code understanding.
-    max_score: 1.0
-    min_score: 0.0
+    max_score: 0.99
+    min_score: 0.01
     scoring:
       error_line: 0.25
       error_type: 0.25
@@ -75,8 +75,8 @@ tasks:
       duplicate detection, OS-specific bug identification,
       and OOO-aware developer assignment. Genuinely
       challenges frontier models like GPT-4.
-    max_score: 1.0
-    min_score: 0.0
+    max_score: 0.99
+    min_score: 0.01
     scoring:
       error_line: 0.15
       error_type: 0.15

@@ -242,7 +242,7 @@ def check_fixed_code(agent_fix: str, correct_fix: str) -> float:
 #   temp files    -> cleaned up after each run
 # ================================================================
 def run_tests_on_fix(fixed_code: str,
-                      test_cases: list) -> float:
+                test_cases: list) -> float:
 
     import subprocess
     import tempfile
@@ -373,6 +373,7 @@ def grade_easy(action: Action, bug: dict) -> Reward:
 
     # ---- CALCULATE TOTAL ----
     total_score = round(min(sum(breakdown.values()), 1.0), 2)
+    total_score = max(0.01, min(0.99, total_score))
     feedback = " | ".join(feedback_parts)
     feedback += f" | Total: {total_score}/1.0"
 
@@ -508,6 +509,7 @@ def grade_medium(action: Action, bug: dict) -> Reward:
 
     # ---- CALCULATE TOTAL ----
     total_score = round(min(sum(breakdown.values()), 1.0), 2)
+    total_score = max(0.01, min(0.99, total_score))
     feedback = " | ".join(feedback_parts)
     feedback += f" | Total: {total_score}/1.0"
 
@@ -774,6 +776,7 @@ def grade_hard(action: Action, bug: dict) -> Reward:
 
     # ---- CALCULATE TOTAL ----
     total_score = round(min(sum(breakdown.values()), 1.0), 2)
+    total_score = max(0.01, min(0.99, total_score))
     feedback = " | ".join(feedback_parts)
     feedback += f" | Total: {total_score}/1.0"
 

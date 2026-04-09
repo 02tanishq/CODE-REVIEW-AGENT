@@ -308,15 +308,15 @@ class Reward(BaseModel):
 
     score: float = Field(
         description="Total score between 0.0 and 1.0",
-        ge=0.0,   # ge = greater than or equal (minimum value)
-        le=1.0    # le = less than or equal (maximum value)
-        # 0.0 = completely wrong
+        ge=0.0,   # ge = greater than  (minimum value)
+        le=1.0    # le = less than  (maximum value)
+        
         # 0.5 = partially correct
-        # 1.0 = perfectly correct
+        
     )
 
     max_score: float = Field(
-        default=1.0,
+        default=0.99,
         description="Maximum possible score for this task",
     )
 
